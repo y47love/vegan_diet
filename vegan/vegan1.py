@@ -47,10 +47,10 @@ class DatasetPreparator:
             print(f"Processing {class_name}...")
             class_dir = self.data_dir / class_name
 
-            # 이미지 파일 찾기 (대소문자 구분 없이)
+            # 이미지 파일 찾기 (대소문자 구분 없이, 재귀적 탐색)
             images = []
             for ext in ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG']:
-                images.extend(list(class_dir.glob(f'*{ext}')))
+                images.extend(list(class_dir.rglob(f'*{ext}')))  # rglob으로 변경하여 재귀적 탐색
 
             if not images:
                 print(f"Warning: No images found in {class_dir}")
@@ -203,12 +203,16 @@ class NutritionAnalyzer:
         
         return meal_analysis
 
+import cv2
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+# 한글 폰트 설정
+font_path = "C:/Windows/Fonts/malgun.ttf"  # Windows용
+fontprop = fm.FontProperties(fname=font_path, size=12)
+plt.rc('font', family=fontprop.get_name())
+
 def plot_detections(image_path, detections, class_names):
-    # 한글 폰트 설정
-    plt.rcParams['font.family'] = 'NanumGothic'  # 나눔고딕 폰트 사용
-    # 또는 다른 한글 폰트를 사용할 수 있습니다:
-    # plt.rcParams['font.family'] = 'Malgun Gothic'  # 맑은 고딕
-    
     img = cv2.imread(image_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
@@ -230,13 +234,14 @@ def plot_detections(image_path, detections, class_names):
             linewidth=2
         ))
         
-        # 클래스명과 신뢰도 표시
+        # 클래스명과 신뢰도 표시 (한글 정상 표시)
         plt.text(
             bbox[0],
             bbox[1] - 5,
             f'{class_names[class_id]} ({conf:.2f})',
             color='red',
             fontsize=10,
+            fontproperties=fontprop,  # 한글 폰트 적용
             bbox=dict(facecolor='white', alpha=0.8)
         )
     
@@ -246,7 +251,7 @@ def plot_detections(image_path, detections, class_names):
 def main():
     # 현재 작업 디렉토리의 절대 경로를 기준으로 설정
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    DATA_DIR = os.path.join(BASE_DIR, "FDFD")
+    DATA_DIR = os.path.join(BASE_DIR, "Food")
     OUTPUT_DIR = os.path.join(BASE_DIR, "yolo_dataset")
     NUTRITION_FILE = os.path.join(BASE_DIR, "FDDB.xlsx")
     
