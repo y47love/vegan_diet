@@ -46,7 +46,7 @@ class FoodDetectionModel:
         return detections
 
 # 모델 인스턴스 생성
-model = FoodDetectionModel("path/to/your/best.pt")
+model = FoodDetectionModel("./best.pt")
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
