@@ -35,7 +35,7 @@ def main():
     elif st.session_state["section"] == "식단 조언":       # 최종? 조언해주는 창
         diet.show()
     elif st.session_state["section"] == "월별 식단":       # 달력형식으로 그날 무엇을 먹었는지 기록하는 함수
-        calendar_app.show()
+        calendar.show()
     elif st.session_state["section"] == "메뉴 추천":       # 기타 비건식 추천?? 만들면 좋을듯 
         recommend_menu.show()  # 이제 이 함수가 정의되어 있으므로 오류가 발생하지 않음
 
