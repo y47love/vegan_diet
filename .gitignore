@@ -169,3 +169,10 @@ cython_debug/
 *.tiff
 *.webp
 
+# YOLO 모델 파일 및 기타 가중치 제외
+*.pt
+*.onnx
+*.tflite
+*.pb
+
+
